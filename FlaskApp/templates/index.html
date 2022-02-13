@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Option Analysis</title>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <style>
+        .content1 {
+            position: absolute;
+            left: 50%;
+            top: 40%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+        .content2 {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+        body {
+        background-color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="color: aliceblue; position:centre ; text-align: center;">Click on any button to see the graph</h2>
+    <div class="content1">
+        <form action="nifty" method="post">
+            <button class="waves-effect waves-light btn-large" type="submit" name="action">Nifty
+            </button>
+        </form>
+    </div>
+        <br>
+        <br>
+    <div class="content2">    
+        <form action='bankNifty' method="post">
+            <button class="waves-effect waves-light btn-large" type="submit" name="action">Bank-Nifty
+            </button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nifty Data</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+    var ce_graph = {}
+    var pe_graph = {};
+    var time_graph = [];
+    var objects = [1,1,1,1,1];
+    var ce_fixed = ["36900","37000","37100","37200","37300"];
+    var time_sleep = 180000;
+    for(var i = 0 ; i < 130 ; i++){
+            time_graph.push(i);
+    }
+    window.onload = function(){  
+        for(var i = 0 ; i < 5; i++){
+            objects[i] = new Chart("Chart" + String(i+1), {
+                type: "line",
+                data: {
+                    labels: time_graph,
+                    datasets: [
+                        { 
+                            data  : [],
+                            borderColor: "red",
+                            fill: false,
+                            label : "Call"
+                        },
+                        { 
+                            data : [], 
+                            borderColor: "green",
+                            fill: false,
+                            label : "Put"
+                        },
+                    ]
+                },
+                options: {
+                    legend: {display: true},
+                    title : {
+                        display : true,
+                        fontSize : 16
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                            stepSize: 0.5
+                            },
+                        }]
+                    }
+                }
+            });
+        }
+    }  
+
+
+
+
+
+    function show_graph(ce,pe){
+       var ce_data_graph = [];
+       var pe_data_graph = [];
+        for (let i = 0; i < ce.length; i++){
+            ce_data_graph.push(ce_graph[ce[i]]);
+        }
+        for (let i = 0; i < pe.length; i++){
+            pe_data_graph.push(pe_graph[pe[i]]);
+        }
+        var c1;
+        console.log(1);
+        for(var i = 0 ; i < 5; i++){
+            c1 = objects[i];
+            c1.data.datasets[0].data = ce_data_graph[i];
+            c1.data.datasets[1].data = pe_data_graph[i];
+            c1.options.title.text = ce[i];
+            c1.update();
+        }
+    }
+
+    var getDisplayData = () => {
+        // Todo
+        const url = '/getBankNiftyData'
+        fetch(url)
+        .then(response => response.json())  
+        .then(json => {
+            ce_graph = json['CE'];
+            pe_graph = json['PE'];    
+            console.log(json); 
+        });
+        var ce = document.getElementById('ce').value;
+        var pe = document.getElementById('ce').value;
+        ce = ce.split(',');
+        pe = pe.split(',');
+        if(ce.length != 5){
+            ce = ce_fixed;
+        }
+        if(pe.length != 5){
+            pe = ce_fixed;
+        }
+        show_graph(ce,pe);
+    }
+
+    var get_data_and_display = setInterval(getDisplayData, time_sleep);
+
+
+    function getData(){
+        var ce = document.getElementById('ce').value;
+        var pe = document.getElementById('ce').value;
+        ce = ce.split(',');
+        pe = pe.split(',');
+        if(ce.length != 5 && pe.length != 5){
+            return;
+        }
+        show_graph(ce,pe);
+        return false;
+    }
+</script>
+</head>
+<body>
+    <br>
+    <br>
+    <form onsubmit="return getData() ; return false;">
+        <div class="conten1">
+            <div class="row">
+                <div class="input-field col s12">
+                <input placeholder="" id="ce" type="text" style="color: black;">
+                <label for="ce" style="color: red;">Enter Strike Prices for generating Chart</label>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <button class="waves-effect waves-light btn-large" type="submit">Go
+        </button>
+      </form>
+    <br>
+    <br>
+
+    <canvas id="Chart1" width="1300" height="800"></canvas>
+    <canvas id="Chart2" style="width:1500px ; max-width: 2000px; display: block; height: 900px;" width="1300" height="800"></canvas>
+    <canvas id="Chart3" style="width:1500px ; max-width: 2000px; display: block; height: 900px;" width="1300" height="800"></canvas>
+    <canvas id="Chart4" style="width:1500px ; max-width: 2000px; display: block; height: 900px;" width="1300" height="800"></canvas>
+    <canvas id="Chart5" style="width:1500px ; max-width: 2000px; display: block; height: 900px;" width="1300" height="800"></canvas>
+
+</body>
+</html>

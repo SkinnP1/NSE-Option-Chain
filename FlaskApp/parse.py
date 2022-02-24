@@ -12,7 +12,7 @@ pe_nifty = {}
 ce_bank = {}
 pe_bank = {}
 
-for i in range(16000,19050,50):
+for i in range(15000,19050,50):
     ce_nifty[i] = []
     pe_nifty[i] = []
 
@@ -39,7 +39,7 @@ def niftyData():
     while True:
         try :
             driver = webdriver.Chrome("./chromedriver")
-            url = "https://www.moneycontrol.com/indices/fno/view-option-chain/NIFTY/2022-02-17"
+            url = "https://www.moneycontrol.com/indices/fno/view-option-chain/NIFTY/2022-03-03"
             driver.minimize_window()
             driver.get(url)
             rows = driver.find_elements_by_tag_name("tr")
@@ -62,8 +62,8 @@ def niftyData():
                 
                 
                 if strike in ce_nifty : 
-                    ce_nifty[strike].append(call_change/100000)
-                    pe_nifty[strike].append(put_change/100000)
+                    ce_nifty[strike].append(call_change/100)
+                    pe_nifty[strike].append(put_change/100)
             
             return_dict = {}
             return_dict['CE'] = ce_nifty
@@ -81,7 +81,7 @@ def bankNiftyData():
     while True:
         try :
             driver = webdriver.Chrome("./chromedriver")
-            url = "https://www.moneycontrol.com/indices/fno/view-option-chain/BANKNIFTY/2022-02-17"
+            url = "https://www.moneycontrol.com/indices/fno/view-option-chain/BANKNIFTY/2022-03-03"
             driver.minimize_window()
             driver.get(url)
             rows = driver.find_elements_by_tag_name("tr")
@@ -104,8 +104,8 @@ def bankNiftyData():
                 
                 
                 if strike in ce_bank : 
-                    ce_bank[strike].append(call_change/100000)
-                    pe_bank[strike].append(put_change/100000)
+                    ce_bank[strike].append(call_change/100)
+                    pe_bank[strike].append(put_change/100)
             
             return_dict = {}
             return_dict['CE'] = ce_bank
@@ -118,4 +118,4 @@ def bankNiftyData():
             driver.close() 
             time.sleep(5)
 
-app.run(debug=True, port=8125)
+app.run(debug=True, port=8645)

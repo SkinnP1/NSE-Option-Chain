@@ -16,8 +16,9 @@
     var pe_graph = {};
     var time_graph = [];
     var objects = [1,1,1,1,1];
+    var changeChart;
     var ce_fixed = ["17000","17050","17100","17150","17200"];
-    var time_sleep = 180000;
+    var time_sleep = 30000;
     for(var i = 0 ; i < 130 ; i++){
             time_graph.push(i);
     }
@@ -58,6 +59,41 @@
                 }
             });
         }
+        changeChart = new Chart("changeOI", {
+                type: "line",
+                data: {
+                    labels: time_graph,
+                    datasets: [
+                        { 
+                            data  : [],
+                            borderColor: "red",
+                            fill: false,
+                            label : "Call"
+                        },
+                        { 
+                            data : [], 
+                            borderColor: "green",
+                            fill: false,
+                            label : "Put"
+                        },
+                    ]
+                },
+                options: {
+                    legend: {display: true},
+                    title : {
+                        text : "Total Change OI plot for prices around ATM",
+                        display : true,
+                        fontSize : 16
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                            stepSize: 0.5
+                            },
+                        }]
+                    }
+                }
+            });
     }  
 
 
@@ -73,15 +109,34 @@
         for (let i = 0; i < pe.length; i++){
             pe_data_graph.push(pe_graph[pe[i]]);
         }
+
+        var sum = (r, a) => r.map((b, i) => a[i] + b);
+        var price = parseInt(ce[2]);
+        var prices = [price-150, price-100, price-50, price, price+50, price+100, price+150];
+        console.log(prices);
+        var ce_all = [];
+        var pe_all = [];
+        for(let i = 0 ; i < prices.length ; i++){
+            ce_all.push(ce_graph[prices[i]]);
+            pe_all.push(pe_graph[prices[i]]);
+        }
+        console.log(ce_all);
+        var ce_total = ce_all.reduce(sum);
+        var pe_total = pe_all.reduce(sum);
+        console.log(ce_total);
+        changeChart.data.datasets[0].data = ce_total;
+        changeChart.data.datasets[1].data = pe_total;
+        changeChart.update();
         var c1;
-        console.log(1);
         for(var i = 0 ; i < 5; i++){
             c1 = objects[i];
             c1.data.datasets[0].data = ce_data_graph[i];
             c1.data.datasets[1].data = pe_data_graph[i];
             c1.options.title.text = ce[i];
             c1.update();
+      
         }
+
     }
 
     var getDisplayData = () => {
@@ -143,10 +198,31 @@
     <br>
     <br>
 
-    <canvas id="Chart1" width="1300" height="800"></canvas>
+    <canvas id="changeOI" style="width:1500px ; max-width: 2000px; display: block; height: 900px;" width="1300" height="800"></canvas>
+    <br>
+    <br>
+    <br>
+    <br>
+    <canvas id="Chart1" style="width:1500px ; max-width: 2000px; display: block; height: 900px;" width="1300" height="800"></canvas>
+    <br>
+    <br>
+    <br>
+    <br>
     <canvas id="Chart2" style="width:1500px ; max-width: 2000px; display: block; height: 900px;" width="1300" height="800"></canvas>
+    <br>
+    <br>
+    <br>
+    <br>
     <canvas id="Chart3" style="width:1500px ; max-width: 2000px; display: block; height: 900px;" width="1300" height="800"></canvas>
+    <br>
+    <br>
+    <br>
+    <br>
     <canvas id="Chart4" style="width:1500px ; max-width: 2000px; display: block; height: 900px;" width="1300" height="800"></canvas>
+    <br>
+    <br>
+    <br>
+    <br>
     <canvas id="Chart5" style="width:1500px ; max-width: 2000px; display: block; height: 900px;" width="1300" height="800"></canvas>
 
 </body>

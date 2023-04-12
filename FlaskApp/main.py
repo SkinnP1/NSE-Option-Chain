@@ -93,3 +93,5 @@ def bankNiftyData():
 
 app.run(debug=True, port=8039)
 
+# AKIAIOSFODNN7EXAMPLE  
+# wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
